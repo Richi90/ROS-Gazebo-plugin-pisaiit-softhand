@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot name="softhands" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:include filename="$(find softhands_description)/urdf/v1.0/sh_v1.xacro"/>
+
+	<xacro:macro name="softhands" params="type version parent model position orientation">
+
+		# Softhand Base	
+		<joint name="${type}_hand_base_joint" type="fixed">
+			<origin xyz="${position}" rpy="${orientation}"/>
+			<parent link="${parent}" />
+			<child link="${type}_hand_palm_base" />
+		</joint>
+		<link name="${type}_hand_palm_base">
+		</link>
+
+		# Softhand VERSION 1.0
+        <xacro:if value="${version == 'v1.0'}">
+
+			<xacro:sh_v1 type="${type}" 
+				parent = "${parent}"
+				position ="${position}"
+				orientation ="${orientation}">
+			</xacro:sh_v1>	
+
+		</xacro:if>
+
+		# TODO: OTHER VERSIONs
+
+		# Gazebo custom synergy-plugin
+	    <gazebo>
+	        <plugin name="synergy_plugin" filename="libsofthands_synergy_plugin.so">
+				<namespace>${type}_hand</namespace>
+				<close_rate>0.001</close_rate> 			# from 0 to 1: 0 - slow closure, 1 - fast closure
+				<close_type>${model}</close_type> 		# hand closure type, "power" or "pinch"
+	        </plugin>
+	    </gazebo>
+
+		<gazebo>
+		  <self_collide>1</self_collide>
+		</gazebo>
+
+	</xacro:macro>
+
+</robot>
