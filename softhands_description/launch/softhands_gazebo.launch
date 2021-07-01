@@ -3,6 +3,7 @@
 	
 	<!-- start gazebo server with empty world -->
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find softhands_description)/worlds/softhands.world"/>
 		<arg name="paused" value="true"/>
 	</include>
 
@@ -10,7 +11,7 @@
 
 	<arg name="x" default="0"/>
 	<arg name="y" default="0"/>
-	<arg name="z" default="0.16"/>
+	<arg name="z" default="0.0"/>
 
 	<node name="my_robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
 		args="-urdf -param robot_description -model softhands_description -x $(arg x) -y $(arg y) -z $(arg z)"/>
